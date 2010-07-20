@@ -25,7 +25,7 @@
 
 
 //  --------------------------------------------------------------------------------------
-//  somebody did click on a chekbox
+//  somebody clicked on a chekbox
 //
 - (IBAction)checkBoxClicked:(id)sender
 {
@@ -300,7 +300,7 @@
 
 
 //  --------------------------------------------------------------------------------------
-//  every time th prefs gets selected
+//  every time the prefs gets selected
 //
 - (void) didSelect {
 	[self readSystemSettings];
@@ -439,7 +439,7 @@
 
 //  --------------------------------------------------------------------------------------
 //  try to get the root authorization to save global prefs
-//  might return errAuthorizationCanceled, which is not an error but sill failed
+//  might return errAuthorizationCanceled, which is not an error but still failed
 //
 - (OSStatus) tryAuthorization {
 	OSStatus err = 0;
