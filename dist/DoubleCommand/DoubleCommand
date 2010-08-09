@@ -23,7 +23,7 @@ if [ -e ~/Library/Preferences/DoubleCommand.pref ]; then
 elif [ -e ./DoubleCommand.pref ]; then
 	config_value=`cat ./DoubleCommand.pref`
 else
-	config_value=1
+	config_value="dc.config=0"
 fi
 
 argument="$1"
@@ -39,7 +39,7 @@ case "$argument" in
 	start)
 		echo "Loading DoubleCommand"
 		$kextload ./DoubleCommand.kext
-		$sysctl -w dc.config=$config_value
+		$sysctl -w $config_value
 	;;
 	stop)
 		echo "Unloading DoubleCommand"
@@ -47,7 +47,7 @@ case "$argument" in
 	;;
 	config)
 		echo "Configuring DoubleCommand"
-		$sysctl -w dc.config=$config_value
+		$sysctl -w $config_value
 	;;
 	*)
 		echo "Usage: $0 {start|stop|config}"

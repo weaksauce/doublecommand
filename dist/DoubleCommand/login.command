@@ -8,6 +8,6 @@ if [ ! -z "$1" ]
 then
 	if [ -e "/Users/$1/Library/Preferences/DoubleCommand.pref" ]; then
 		config_value=`cat /Users/$1/Library/Preferences/DoubleCommand.pref`
-		$sysctl -w dc.config=$config_value
+		$sysctl -w $config_value
 	fi
 fi
