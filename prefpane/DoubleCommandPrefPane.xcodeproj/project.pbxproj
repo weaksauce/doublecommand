@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		6939FBC51210A00E0088CD40 /* AppKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6939FBC41210A00E0088CD40 /* AppKit.framework */; };
 		69DAA3AB11F5853800E24E52 /* KeyboardListUtility.h in Headers */ = {isa = PBXBuildFile; fileRef = 69DAA3A911F5853800E24E52 /* KeyboardListUtility.h */; };
 		69DAA3AC11F5853800E24E52 /* KeyboardListUtility.m in Sources */ = {isa = PBXBuildFile; fileRef = 69DAA3AA11F5853800E24E52 /* KeyboardListUtility.m */; };
 		69DAA3D911F586EB00E24E52 /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 69DAA3D811F586EB00E24E52 /* CoreFoundation.framework */; };
@@ -30,7 +29,6 @@
 		089C1672FE841209C02AAC07 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
 		089C167EFE841241C02AAC07 /* English */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		32DBCF630370AF2F00C91783 /* DCP_prefPane_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DCP_prefPane_Prefix.pch; sourceTree = "<group>"; };
-		6939FBC41210A00E0088CD40 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
 		69DAA3A911F5853800E24E52 /* KeyboardListUtility.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KeyboardListUtility.h; sourceTree = "<group>"; };
 		69DAA3AA11F5853800E24E52 /* KeyboardListUtility.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KeyboardListUtility.m; sourceTree = "<group>"; };
 		69DAA3D811F586EB00E24E52 /* CoreFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreFoundation.framework; path = System/Library/Frameworks/CoreFoundation.framework; sourceTree = SDKROOT; };
@@ -59,7 +57,6 @@
 				866D0B6704DD40D8004B9CAF /* Security.framework in Frameworks */,
 				69DAA3D911F586EB00E24E52 /* CoreFoundation.framework in Frameworks */,
 				69DAA3E711F5873900E24E52 /* IOKit.framework in Frameworks */,
-				6939FBC51210A00E0088CD40 /* AppKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -114,7 +111,6 @@
 		1058C7ACFEA557BF11CA2CBB /* Linked Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				6939FBC41210A00E0088CD40 /* AppKit.framework */,
 				86CD55C504DC6CD800E3E88D /* PreferencePanes.framework */,
 				869A91B704DC7BBD00C0FF6A /* Cocoa.framework */,
 				866D0B6604DD40D8004B9CAF /* Security.framework */,
