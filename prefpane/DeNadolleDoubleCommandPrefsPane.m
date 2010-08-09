@@ -2,10 +2,15 @@
 #import <Security/AuthorizationTags.h>
 // #import <sys/param.h>
 #import <sys/sysctl.h>
+#import <CoreFoundation/CFPreferences.h>
+#import "KeyboardListUtility.h"
 
 
 @implementation DeNadolleDoubleCommandPrefsPane
 
+
+#pragma mark -
+#pragma mark Button Handlers
 //  --------------------------------------------------------------------------------------
 //  all checkboxes off, please
 //
@@ -240,6 +245,7 @@
 //  User wants to activate active prefs
 //
 - (IBAction)setActivePressed:(id)sender {
+	return;
 	mActiveVal = mEditVal;
 	OSStatus err = [self writeActiveSettings];
 	if (err) {
@@ -281,6 +287,8 @@
 
 
 
+#pragma mark -
+#pragma mark Main
 //  --------------------------------------------------------------------------------------
 //  we were just loaded 
 //
@@ -296,6 +304,10 @@
 			@"Oh dear", nil,  nil);
 	}
 	// the other prefs will be fetched in didSelect in a tick :)
+	
+	//load the keyboards from the prefs file and the io registry.
+	keyboardList = [[KeyboardListUtility keyboards] retain];
+	[mKeyboardTable reloadData];
 }
 
 
@@ -318,10 +330,13 @@
 	return ((mEditVal & (1 << bit)) != 0);
 }
 
+#pragma mark -
+#pragma mark Settings IO
 //  --------------------------------------------------------------------------------------
 //  read System Prefs from Disk
 //
 - (BOOL) readSystemSettings {
+	return YES;
 	NSFileManager *manager = [NSFileManager defaultManager];
 	BOOL hasSettings = YES;
 	if ([manager fileExistsAtPath: systemPrefsPath]) {
@@ -341,13 +356,14 @@
 //  write System prefs to Disk
 //
 - (OSStatus) writeSystemSettings {
+	return 0;
 	OSStatus err = 0;
 	
 	if (mAuthRef == nil) {
 		err = [self tryAuthorization];
 	}
 	if (! err) {
-		const char * const args[] = { [[NSString stringWithFormat:@"%d", mSystemVal] UTF8String], NULL };
+		const char * const args[] = { [[NSString stringWithFormat:@"dc.config=%d", mSystemVal] UTF8String], NULL };
 		err = AuthorizationExecuteWithPrivileges (mAuthRef, [sysPrefsWriteTool UTF8String], 
 										kAuthorizationFlagDefaults, (char * const *) args, nil);
 	}
@@ -359,6 +375,7 @@
 //  read User Prefs from Disk
 //
 - (BOOL) readUserSettings {
+	return YES;
 	NSFileManager *manager = [NSFileManager defaultManager];
 	BOOL hasSettings = YES;
 	if ([manager fileExistsAtPath: mUserPrefPath]) {
@@ -381,7 +398,8 @@
 - (BOOL) writeUserSettings
 {
     BOOL ret = NO;
-	NSString * thePrefs = [NSString stringWithFormat: @"%d", mUserVal];
+	return ret;
+	NSString * thePrefs = [NSString stringWithFormat: @"dc.config=%d", mUserVal];
 	ret = [thePrefs writeToFile:mUserPrefPath atomically:YES encoding:NSUTF8StringEncoding error:NULL];
     // defaults write com.apple.loginwindow LoginHook /Library/StartupItems/DoubleCommand/config.command
     /*NSTask * setting = [[NSTask alloc] init];
@@ -398,7 +416,7 @@
 //
 - (BOOL) readActiveSettings {
 	BOOL hasSettings = YES;
-
+	return YES;
 	char *name = "dc.config";
 	size_t len = 4;
 	int errCode = 0;
@@ -425,6 +443,7 @@
 //  write Active Settings to sysctl
 //
 - (OSStatus) writeActiveSettings {
+	return 0;
     char *name = "dc.config";
     u_int len = 4;
     OSStatus errCode = 0;
@@ -434,9 +453,50 @@
 }
 
 
+#pragma mark -
+#pragma mark TableView datasource methods
+- (id)tableView:(NSTableView *)aTableView objectValueForTableColumn:(NSTableColumn *)aTableColumn row:(int)rowIndex {
+    id theRecord, theValue;
+	
+    NSParameterAssert(rowIndex >= 0 && rowIndex < [keyboardList count]);
+    theRecord = [keyboardList objectAtIndex:rowIndex];
+	
+    theValue = [theRecord objectForKey:[aTableColumn identifier]];
+	
+    return theValue;
+}
+
+- (void)tableView:(NSTableView *)aTableView setObjectValue:anObject forTableColumn:(NSTableColumn *)aTableColumn row:(int)rowIndex{
+    id theRecord;
+    NSParameterAssert(rowIndex >= 0 && rowIndex < [keyboardList count]);
+    theRecord = [keyboardList objectAtIndex:rowIndex];
+    [theRecord setObject:anObject forKey:[aTableColumn identifier]];
+}
+
+- (int)numberOfRowsInTableView:(NSTableView *)aTableView {
+	return [keyboardList count];
+}
+
+#pragma mark -
+#pragma mark TableView delegate methods
+
+- (void)tableViewSelectionDidChange:(NSNotification *)aNotification{
+	//	NSLog(@"notification: %@", aNotification);
+//	mEditVal = mUserVal;
+	if(!([mKeyboardTable selectedRow] < 0)){
+		int index = [mKeyboardTable selectedRow];
+		NSDictionary* obj = [keyboardList objectAtIndex:index];
+		NSLog(@"%@", [obj objectForKey:@"configid"]);
+		mEditVal = [[obj objectForKey:@"configid"] intValue];
+		[self refreshCheckBoxes];			
+	}
+	
+
+}
 
 
-
+#pragma mark -
+#pragma mark Auth methods and deallocation
 //  --------------------------------------------------------------------------------------
 //  try to get the root authorization to save global prefs
 //  might return errAuthorizationCanceled, which is not an error but still failed
@@ -477,6 +537,7 @@
 		AuthorizationFree (mAuthRef, kAuthorizationFlagDestroyRights);
 		mAuthRef = 0;
 	}
+	[keyboardList release];
 }
 
 //  --------------------------------------------------------------------------------------
@@ -501,7 +562,10 @@
 	[editVal setStringValue: [NSString stringWithFormat:@"%d", mEditVal]];
 }
 	
-
+- (NSString*) getSysctrlStringFromCurrentSettings{
+	
+	return @"dc.config=0 dc.config1=80 dc.keyboard1=40";
+}
 
 
 @end

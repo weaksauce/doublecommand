@@ -1,8 +1,10 @@
 /* DeNadolleDoubleCommandPrefsPane */
 
+#import <Cocoa/Cocoa.h>
 #import <PreferencePanes/NSPreferencePane.h>
 #import <CoreFoundation/CoreFoundation.h> 
 #import <Security/Authorization.h>
+#import "KeyboardListUtility.h"
 
 #define DCP_lastusedbit  30
 
@@ -33,8 +35,9 @@ NSString * systemPrefsPath = @"/Library/StartupItems/DoubleCommand/DoubleCommand
 NSString * userPrefsRelPath = @"Library/Preferences/DoubleCommand.pref";
 NSString * sysPrefsWriteTool = @"/Library/PreferencePanes/DoubleCommandPreferences.prefPane/Contents/Resources/prefWriter";
 
+@protocol NSTableViewDelegate;
 
-@interface DeNadolleDoubleCommandPrefsPane : NSPreferencePane
+@interface DeNadolleDoubleCommandPrefsPane : NSPreferencePane //<NSTableViewDelegate>
 {
     IBOutlet id allOffButton;
     IBOutlet id checkBoxes; // NSMatrix containig all the NSButton-Checkboxes
@@ -59,8 +62,13 @@ NSString * sysPrefsWriteTool = @"/Library/PreferencePanes/DoubleCommandPreferenc
 	unsigned int mActiveVal;
 	unsigned int mEditVal;
 	
+	IBOutlet id keyboardConfigCurrent;
+	
 	NSString * mUserPrefPath;
 	
+	IBOutlet NSTableView * mKeyboardTable;
+	
+	NSMutableArray* keyboardList;
 }
 
 /*
@@ -78,6 +86,8 @@ NSString * sysPrefsWriteTool = @"/Library/PreferencePanes/DoubleCommandPreferenc
 - (IBAction)showSystemPressed:(id)sender;
 - (IBAction)showActivePressed:(id)sender;
 
+//- (IBAction)addKeyboardPressed:(id)sender;
+
 /* will be called from the App */
 - (void) mainViewDidLoad;
 - (void) didSelect;
@@ -93,5 +103,11 @@ NSString * sysPrefsWriteTool = @"/Library/PreferencePanes/DoubleCommandPreferenc
 - (BOOL) readActiveSettings;
 - (OSStatus) writeActiveSettings;
 - (void) refreshCheckBoxes;
+
+//table view delegate methods.
+- (id)tableView:(NSTableView *)aTableView objectValueForTableColumn:(NSTableColumn *)aTableColumn row:(int)rowIndex;
+- (void)tableView:(NSTableView *)aTableView setObjectValue:anObject forTableColumn:(NSTableColumn *)aTableColumn row:(int)rowIndex;
+- (int)numberOfRowsInTableView:(NSTableView *)aTableView;
+- (void)tableViewSelectionDidChange:(NSNotification *)aNotification;
 
 @end
