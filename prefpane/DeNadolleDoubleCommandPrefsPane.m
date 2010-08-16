@@ -478,7 +478,11 @@
 		NSLog(@"%@", [obj objectForKey:@"newConfigid"]);
 		mEditVal = [[obj objectForKey:@"newConfigid"] intValue];
 		[self refreshCheckBoxes];
+	}else {
+		//clear the checkboxes if the selection is invalid
+		[self allOffPressed:self];
 	}
+
 }
 
 
