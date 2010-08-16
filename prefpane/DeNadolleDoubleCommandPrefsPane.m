@@ -12,10 +12,23 @@
 #pragma mark -
 #pragma mark Button Handlers
 //  --------------------------------------------------------------------------------------
+//	Save the settings to disk and preferences.
+//
+- (IBAction)saveSettingsPressed:(id)sender {
+	//nothing yet
+}
+
+//  --------------------------------------------------------------------------------------
+//	Revert the current keyboard setting to the orignal.c
+//
+- (IBAction)revertSettingsPressed:(id)sender {
+	//nothing yet
+}
+
+//  --------------------------------------------------------------------------------------
 //  all checkboxes off, please
 //
-- (IBAction)allOffPressed:(id)sender
-{
+- (IBAction)allOffPressed:(id)sender {
 	if (mEditVal != 0) {
 		mEditVal = 0;
 		int i;
@@ -30,10 +43,9 @@
 
 
 //  --------------------------------------------------------------------------------------
-//  somebody clicked on a chekbox
+//  somebody clicked on a checkbox
 //
-- (IBAction)checkBoxClicked:(id)sender
-{
+- (IBAction)checkBoxClicked:(id)sender {
 	id cell = [sender selectedCell];
 	int bit = [cell tag];
 	BOOL setOn = ([cell state] == NSOnState);
@@ -204,7 +216,7 @@
 //  User wants to save user prefs
 //
 - (IBAction)setUserPressed:(id)sender {
-	mUserVal = mEditVal;
+	//mUserVal = mEditVal;
 	if (! [self writeUserSettings]) {
 		NSRunAlertPanel(@"DoubleCommand Prefs",
 			@"Could not write your user prefs. Sorry.",
@@ -333,7 +345,7 @@
 #pragma mark -
 #pragma mark Settings IO
 //  --------------------------------------------------------------------------------------
-//  read System Prefs from Disk
+//  read System Prefs from the preferences
 //
 - (BOOL) readSystemSettings {
 	return YES;
@@ -353,7 +365,7 @@
 }
 
 //  --------------------------------------------------------------------------------------
-//  write System prefs to Disk
+//  write System prefs to Disk and preferences 
 //
 - (OSStatus) writeSystemSettings {
 	return 0;
@@ -372,7 +384,7 @@
 
 
 //  --------------------------------------------------------------------------------------
-//  read User Prefs from Disk
+//  read User Prefs from preferences
 //
 - (BOOL) readUserSettings {
 	return YES;
@@ -393,7 +405,7 @@
 
 
 //  --------------------------------------------------------------------------------------
-//  write User Prefs to Disk
+//  write User Prefs to Disk and preferences. 
 //
 - (BOOL) writeUserSettings
 {
@@ -479,19 +491,28 @@
 
 #pragma mark -
 #pragma mark TableView delegate methods
+-(void) tableViewSelectionIsChanging:(NSNotification *)notification{
+	//warn the user that they are going to lose info.
+	//save if ok.
+	//mIsChangedConfig = YES;
+//	if(mIsChangedConfig){
+//		[NSAlert alertWithMessageText:@"You have changed the configuration of this keyboard would you like to save?" defaultButton:@"Yes" alternateButton:@"No" otherButton:@"Cancel" informativeTextWithFormat:@""];
+//	}
+//	[[NSAlert alertWithMessageText:@"You have changed the configuration of this keyboard would you like to save?" defaultButton:@"Yes" alternateButton:@"No" otherButton:@"Cancel" informativeTextWithFormat:@""] runModal];
+//	NSRunAlertPanel(@"DoubleCommand Prefs",
+//					@"YouHaveChanged the config.",
+//					@"Oh dear", nil,  nil);
+	
+}
 
 - (void)tableViewSelectionDidChange:(NSNotification *)aNotification{
-	//	NSLog(@"notification: %@", aNotification);
-//	mEditVal = mUserVal;
 	if(!([mKeyboardTable selectedRow] < 0)){
 		int index = [mKeyboardTable selectedRow];
 		NSDictionary* obj = [keyboardList objectAtIndex:index];
 		NSLog(@"%@", [obj objectForKey:@"configid"]);
 		mEditVal = [[obj objectForKey:@"configid"] intValue];
-		[self refreshCheckBoxes];			
+		[self refreshCheckBoxes];
 	}
-	
-
 }
 
 

@@ -7,7 +7,7 @@
 #import <Cocoa/Cocoa.h>
 #import "KeyboardListUtility.h"
 
-#define MAX_NUM_KEYBOARDS 10
+#define MAX_NUM_KEYBOARDS 4
 
 @implementation KeyboardListUtility
 
@@ -81,7 +81,8 @@
 		[currentKeyboard setObject:[NSNumber numberWithInt:hidsubsystemID] forKey:@"keyboardID"];
 		//populate the current keyboard with default values
 		[currentKeyboard setObject:strProduct forKey:@"descriptionUserSet"];		
-		[currentKeyboard setObject:[NSNumber numberWithInt:0] forKey:@"configID"]; 
+		[currentKeyboard setObject:[NSNumber numberWithInt:0] forKey:@"configID"];
+		[currentKeyboard setObject:[NSNumber numberWithInt:0] forKey:@"newConfigID"];		
 		[currentKeyboard setObject:[NSNumber numberWithBool:NO] forKey:@"active"]; 
 		[currentKeyboard setObject:[NSNumber numberWithBool:NO] forKey:@"deleted"];
 		
@@ -117,10 +118,40 @@
 
 - (NSMutableArray*) keyboardListFromPrefs{
 	NSUserDefaults* systemSettings = [NSUserDefaults standardUserDefaults];
-	
 	NSMutableArray* keyboardsFound = [[NSMutableArray alloc] init];
+	NSString * GlobalConfigName = @"Global Settings";
 	int i;
 	
+
+	//exit if we do not have a keyboard
+	if(![systemSettings stringForKey:@"dc.description"]){
+		//Fill global keyboard with defaults and add it to the return list
+
+		NSMutableDictionary* currentKeyboard = [[NSMutableDictionary alloc] init];
+		[currentKeyboard setObject:GlobalConfigName forKey:@"description"];
+		[currentKeyboard setObject:GlobalConfigName forKey:@"descriptionUserSet"];		
+		[currentKeyboard setObject:[NSNumber numberWithInt:0] forKey:@"keyboardID"];
+		[currentKeyboard setObject:[NSNumber numberWithInt:0] forKey:@"configID"];
+		[currentKeyboard setObject:[NSNumber numberWithInt:0] forKey:@"newConfigID"];
+		[currentKeyboard setObject:[NSNumber numberWithBool:YES] forKey:@"active"];		
+		[currentKeyboard setObject:[NSNumber numberWithBool:NO] forKey:@"deleted"];
+		
+		[keyboardsFound addObject:currentKeyboard];
+	}else {
+		//fill up the global keyboard config with the saved preferences. 
+		NSMutableDictionary* currentKeyboard = [[NSMutableDictionary alloc] init];
+		[currentKeyboard setObject:GlobalConfigName forKey:@"description"];
+		[currentKeyboard setObject:GlobalConfigName forKey:@"descriptionUserSet"];		
+		[currentKeyboard setObject:[NSNumber numberWithInt:[systemSettings integerForKey:@"dc.keyboardid"]] forKey:@"keyboardID"];
+		[currentKeyboard setObject:[NSNumber numberWithInt:[systemSettings integerForKey:@"dc.configid"]] forKey:@"configID"];
+		[currentKeyboard setObject:[NSNumber numberWithInt:[systemSettings integerForKey:@"dc.configid"]] forKey:@"newConfigID"];
+		[currentKeyboard setObject:[NSNumber numberWithBool:[systemSettings boolForKey:@"dc.active"]] forKey:@"active"];		
+		[currentKeyboard setObject:[NSNumber numberWithBool:[systemSettings boolForKey:@"dc.deleted"]] forKey:@"deleted"];
+		
+		[keyboardsFound addObject:currentKeyboard];
+	}
+	
+	//Get the Saved keyboards from the preferences. 
 	for (i = 1; i <= MAX_NUM_KEYBOARDS; i++) {
 		
 		//exit if we do not have a keyboard
@@ -132,6 +163,7 @@
 		[currentKeyboard setObject:[systemSettings stringForKey:[NSString stringWithFormat:@"dc.descriptionUserSet%d", i]] forKey:@"descriptionUserSet"];		
 		[currentKeyboard setObject:[NSNumber numberWithInt:[systemSettings integerForKey:[NSString stringWithFormat:@"dc.keyboardid%d", i]]] forKey:@"keyboardID"];
 		[currentKeyboard setObject:[NSNumber numberWithInt:[systemSettings integerForKey:[NSString stringWithFormat:@"dc.configid%d", i]]] forKey:@"configID"];
+		[currentKeyboard setObject:[NSNumber numberWithInt:[systemSettings integerForKey:[NSString stringWithFormat:@"dc.configid%d", i]]] forKey:@"newConfigID"];
 		[currentKeyboard setObject:[NSNumber numberWithBool:[systemSettings boolForKey:[NSString stringWithFormat:@"dc.active%d", i]]] forKey:@"active"];		
 		[currentKeyboard setObject:[NSNumber numberWithBool:[systemSettings boolForKey:[NSString stringWithFormat:@"dc.deleted%d", i]]] forKey:@"deleted"];
 		
@@ -154,7 +186,7 @@
 		[systemSettings setObject:[obj objectForKey:@"description"] forKey:[NSString stringWithFormat:@"dc.description%d", counter]];
 		[systemSettings setObject:[obj objectForKey:@"descriptionUserSet"] forKey:[NSString stringWithFormat:@"dc.descriptionUserSet%d", counter]];
 		[systemSettings setObject:[obj objectForKey:@"keyboardID"] forKey:[NSString stringWithFormat:@"dc.keyboardid%d", counter]];
-		[systemSettings setObject:[obj objectForKey:@"configID"] forKey:[NSString stringWithFormat:@"dc.configid%d", counter]];
+		[systemSettings setObject:[obj objectForKey:@"newConfigID"] forKey:[NSString stringWithFormat:@"dc.configid%d", counter]];
 		[systemSettings setObject:[obj objectForKey:@"active"] forKey:[NSString stringWithFormat:@"dc.active%d", counter]];
 		[systemSettings setObject:[obj objectForKey:@"deleted"] forKey:[NSString stringWithFormat:@"dc.deleted%d", counter]];
 	}
