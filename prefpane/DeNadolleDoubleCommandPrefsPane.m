@@ -471,22 +471,22 @@
 
 #pragma mark -
 #pragma mark TableView delegate methods
--(void) tableViewSelectionIsChanging:(NSNotification *)notification{
+- (BOOL)tableView:(NSTableView *)aTableView shouldSelectRow:(int)rowIndex {
 	int currentRow = [mKeyboardTable selectedRow];
 	if(currentRow >= 0){
 		//If the row is valid save the current configuration into the newConfigid field of the data structure. 
-		id theRecord = [keyboardList objectAtIndex:currentRow];
+		NSMutableDictionary* theRecord = [keyboardList objectAtIndex:currentRow];
 		[theRecord setObject:[NSNumber numberWithInt:mEditVal] forKey:@"newConfigID"];
 		[self refreshCheckBoxes];
 	}
+	return YES;
 }
 
 - (void)tableViewSelectionDidChange:(NSNotification *)aNotification{
-	if(!([mKeyboardTable selectedRow] < 0)){
+	if(([mKeyboardTable selectedRow] >= 0)){
 		int index = [mKeyboardTable selectedRow];
 		NSDictionary* obj = [keyboardList objectAtIndex:index];
-		NSLog(@"%@", [obj objectForKey:@"newConfigid"]);
-		mEditVal = [[obj objectForKey:@"newConfigid"] intValue];
+		mEditVal = [[obj objectForKey:@"newConfigID"] intValue];
 		[self refreshCheckBoxes];
 	}else {
 		//clear the checkboxes if the selection is invalid
