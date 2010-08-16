@@ -18,6 +18,7 @@
 	//save to preferences
 	[KeyboardListUtility saveToPrefs:keyboardList];
 	//save to disk for system start
+	[self writeUserSettings];
 	//save to disk globaly. 
 	
 }
@@ -410,50 +411,50 @@
     BOOL ret = NO;
 
 	NSDictionary* currentKbd = [keyboardList objectAtIndex:0];
-	NSNumber* globalConfigID = [currentKbd objectForKey:@"dc.configID"];
+	NSNumber* globalConfigID = [currentKbd objectForKey:@"configID"];
 	NSMutableString * thePrefs = [NSMutableString stringWithFormat: @"dc.config=%d", [globalConfigID intValue]];
 	
 	for (i = 1; i <= MAX_NUM_KEYBOARDS && i < [keyboardList count] ; i++) {
 		NSDictionary* currentKbd = [keyboardList objectAtIndex:i];
-		if (![[currentKbd objectForKey:@"deleted"] boolValue]) {
+		
+		if ([[currentKbd objectForKey:@"deleted"] intValue] == 0) {
+			int kbdID = [[currentKbd objectForKey:@"keyboardID"] intValue];
+			int configID = [[currentKbd objectForKey:@"configID"] intValue];
 			
-			NSNumber * kbdID = [currentKbd objectForKey:@"dc.keyboardID"];
-			NSNumber * configID = [currentKbd objectForKey:@"dc.configID"];
-			
-			[thePrefs stringByAppendingFormat:@" dc.config%d=%d dc.keyboardid%d=%d", i, [configID intValue], i, [kbdID intValue]];			
+			[thePrefs appendFormat:@" dc.config%d=%d dc.keyboard%d=%d", i, configID, i, kbdID];			
 		}
 	}
 	ret = [thePrefs writeToFile:mUserPrefPath atomically:YES encoding:NSUTF8StringEncoding error:NULL];
     return ret;
 }
 
-
-//  --------------------------------------------------------------------------------------
-//  read Active Settings from sysctl
 //
-- (BOOL) readActiveSettings {
-	BOOL hasSettings = YES;
-	return YES;
-	char *name = "dc.config";
-	size_t len = 4;
-	int errCode = 0;
-	int val = 0;
-
-    errCode = sysctlbyname(name, &val, &len, NULL, 0);
-
-    if(errCode == 0)  {
-		mActiveVal = (unsigned int)val;
-		[activeVal setStringValue: [NSString stringWithFormat:@"%d", mActiveVal]];
-	} else {
-		mActiveVal = 0;
-		hasSettings = NO;
-		[activeVal setStringValue:@"n/a"];
-	}
-
-	[showActiveButton setEnabled:hasSettings];
-	[setActiveButton setEnabled:hasSettings];
-	return hasSettings;
-}
+////  --------------------------------------------------------------------------------------
+////  read Active Settings from sysctl
+////
+//- (BOOL) readActiveSettings {
+//	BOOL hasSettings = YES;
+//	return YES;
+//	char *name = "dc.config";
+//	size_t len = 4;
+//	int errCode = 0;
+//	int val = 0;
+//
+//    errCode = sysctlbyname(name, &val, &len, NULL, 0);
+//
+//    if(errCode == 0)  {
+//		mActiveVal = (unsigned int)val;
+//		[activeVal setStringValue: [NSString stringWithFormat:@"%d", mActiveVal]];
+//	} else {
+//		mActiveVal = 0;
+//		hasSettings = NO;
+//		[activeVal setStringValue:@"n/a"];
+//	}
+//
+//	[showActiveButton setEnabled:hasSettings];
+//	[setActiveButton setEnabled:hasSettings];
+//	return hasSettings;
+//}
 
 
 //  --------------------------------------------------------------------------------------
@@ -464,10 +465,24 @@
     char *name = "dc.config";
     u_int len = 4;
     OSStatus errCode = 0;
-
+	
     errCode = sysctlbyname(name, NULL, 0, &mActiveVal, len);
     return (errCode);
 }
+
+//  --------------------------------------------------------------------------------------
+//  write a setting to sysctl
+//
+- (OSStatus) writeValue:(int)configID forSysCtl:(NSString*)sysctlName {
+    OSStatus errCode = 0;    
+    u_int len = sizeof(configID);
+	const char * name = [sysctlName UTF8String];
+	
+    errCode = sysctlbyname(name, NULL, 0, &configID, len);
+    return (errCode);
+}
+
+
 
 
 //  --------------------------------------------------------------------------------------
