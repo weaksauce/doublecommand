@@ -379,16 +379,24 @@
 //
 - (BOOL) writeUserSettings
 {
+	int i;
     BOOL ret = NO;
-	return ret;
-	NSString * thePrefs = [NSString stringWithFormat: @"dc.config=%d", mUserVal];
+
+	NSDictionary* currentKbd = [keyboardList objectAtIndex:0];
+	NSNumber* globalConfigID = [currentKbd objectForKey:@"dc.configID"];
+	NSMutableString * thePrefs = [NSMutableString stringWithFormat: @"dc.config=%d", [globalConfigID intValue]];
+	
+	for (i = 1; i <= MAX_NUM_KEYBOARDS && i < [keyboardList count] ; i++) {
+		NSDictionary* currentKbd = [keyboardList objectAtIndex:i];
+		if (![[currentKbd objectForKey:@"deleted"] boolValue]) {
+			
+			NSNumber * kbdID = [currentKbd objectForKey:@"dc.keyboardID"];
+			NSNumber * configID = [currentKbd objectForKey:@"dc.configID"];
+			
+			[thePrefs stringByAppendingFormat:@" dc.config%d=%d dc.keyboardid%d=%d", i, [configID intValue], i, [kbdID intValue]];			
+		}
+	}
 	ret = [thePrefs writeToFile:mUserPrefPath atomically:YES encoding:NSUTF8StringEncoding error:NULL];
-    // defaults write com.apple.loginwindow LoginHook /Library/StartupItems/DoubleCommand/config.command
-    /*NSTask * setting = [[NSTask alloc] init];
-    [setting setLaunchPath:@"/usr/bin/defaults"];
-    [setting setArguments:[NSArray arrayWithObjects:@"write", @"com.apple.loginwindow", @"LoginHook", @"/Library/StartupItems/DoubleCommand/login.command", nil]];
-    [setting launch];
-    [setting release];*/
     return ret;
 }
 

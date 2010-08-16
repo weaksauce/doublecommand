@@ -31,6 +31,8 @@
 #define SHIFT_DELETE_TO_FORWARD_DELETE	14
 #define SWAP_DELETE_AND_FORWARD_DELETE	30
 
+#define MAX_NUM_KEYBOARDS 4
+
 NSString * systemPrefsPath = @"/Library/StartupItems/DoubleCommand/DoubleCommand.pref";
 NSString * userPrefsRelPath = @"Library/Preferences/DoubleCommand.pref";
 NSString * sysPrefsWriteTool = @"/Library/PreferencePanes/DoubleCommandPreferences.prefPane/Contents/Resources/prefWriter";
