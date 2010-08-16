@@ -217,6 +217,7 @@
 //
 - (IBAction)setUserPressed:(id)sender {
 	//mUserVal = mEditVal;
+	return;
 	if (! [self writeUserSettings]) {
 		NSRunAlertPanel(@"DoubleCommand Prefs",
 			@"Could not write your user prefs. Sorry.",
@@ -229,6 +230,7 @@
 //  User wants to save system prefs
 //
 - (IBAction)setSystemPressed:(id)sender {
+	return;
 	mSystemVal = mEditVal;
 	OSStatus err = [self writeSystemSettings];
 	if ( (err != 0) && (err != errAuthorizationCanceled)) {
