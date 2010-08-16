@@ -1023,18 +1023,18 @@ IDIwMDcAA</bytes>
 								<int key="NSPeriodicInterval">25</int>
 							</object>
 						</object>
-						<object class="NSButton" id="551021748">
+						<object class="NSButton" id="241674020">
 							<reference key="NSNextResponder" ref="38314295"/>
 							<int key="NSvFlags">256</int>
 							<string key="NSFrame">{{379, 600}, {102, 28}}</string>
 							<reference key="NSSuperview" ref="38314295"/>
 							<bool key="NSEnabled">YES</bool>
-							<object class="NSButtonCell" key="NSCell" id="29163855">
+							<object class="NSButtonCell" key="NSCell" id="174261225">
 								<int key="NSCellFlags">67239424</int>
 								<int key="NSCellFlags2">138018816</int>
 								<string key="NSContents">Revert Config</string>
 								<reference key="NSSupport" ref="26"/>
-								<reference key="NSControlView" ref="551021748"/>
+								<reference key="NSControlView" ref="241674020"/>
 								<int key="NSButtonFlags">-2038284033</int>
 								<int key="NSButtonFlags2">1</int>
 								<reference key="NSAlternateImage" ref="1039104970"/>
@@ -1161,18 +1161,18 @@ IDIwMDcAA</bytes>
 								<int key="NSPeriodicInterval">25</int>
 							</object>
 						</object>
-						<object class="NSButton" id="84782196">
+						<object class="NSButton" id="946161584">
 							<reference key="NSNextResponder" ref="38314295"/>
 							<int key="NSvFlags">256</int>
 							<string key="NSFrame">{{15, 600}, {90, 28}}</string>
 							<reference key="NSSuperview" ref="38314295"/>
 							<bool key="NSEnabled">YES</bool>
-							<object class="NSButtonCell" key="NSCell" id="174210863">
+							<object class="NSButtonCell" key="NSCell" id="843932664">
 								<int key="NSCellFlags">67239424</int>
 								<int key="NSCellFlags2">138018816</int>
 								<string key="NSContents">Save Global</string>
 								<reference key="NSSupport" ref="26"/>
-								<reference key="NSControlView" ref="84782196"/>
+								<reference key="NSControlView" ref="946161584"/>
 								<int key="NSButtonFlags">-2038284033</int>
 								<int key="NSButtonFlags2">1</int>
 								<reference key="NSAlternateImage" ref="1039104970"/>
@@ -1449,7 +1449,6 @@ IDIwMDcAA</bytes>
 													</object>
 													<int key="NSResizingMask">3</int>
 													<bool key="NSIsResizeable">YES</bool>
-													<bool key="NSIsEditable">YES</bool>
 													<reference key="NSTableView" ref="401744270"/>
 												</object>
 												<object class="NSTableColumn" id="802859384">
@@ -1774,7 +1773,7 @@ IDIwMDcAA</bytes>
 					<object class="IBActionConnection" key="connection">
 						<string key="label">revertSettingsPressed:</string>
 						<reference key="source" ref="851941072"/>
-						<reference key="destination" ref="551021748"/>
+						<reference key="destination" ref="241674020"/>
 					</object>
 					<int key="connectionID">932</int>
 				</object>
@@ -1782,7 +1781,7 @@ IDIwMDcAA</bytes>
 					<object class="IBActionConnection" key="connection">
 						<string key="label">setSystemPressed:</string>
 						<reference key="source" ref="851941072"/>
-						<reference key="destination" ref="84782196"/>
+						<reference key="destination" ref="946161584"/>
 					</object>
 					<int key="connectionID">935</int>
 				</object>
@@ -1854,9 +1853,9 @@ IDIwMDcAA</bytes>
 							<reference ref="415554010"/>
 							<reference ref="127723712"/>
 							<reference ref="960489375"/>
-							<reference ref="551021748"/>
+							<reference ref="241674020"/>
 							<reference ref="833544052"/>
-							<reference ref="84782196"/>
+							<reference ref="946161584"/>
 						</object>
 						<reference key="parent" ref="494846462"/>
 					</object>
@@ -2420,31 +2419,31 @@ IDIwMDcAA</bytes>
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">929</int>
-						<reference key="object" ref="551021748"/>
+						<reference key="object" ref="241674020"/>
 						<object class="NSMutableArray" key="children">
 							<bool key="EncodedWithXMLCoder">YES</bool>
-							<reference ref="29163855"/>
+							<reference ref="174261225"/>
 						</object>
 						<reference key="parent" ref="38314295"/>
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">930</int>
-						<reference key="object" ref="29163855"/>
-						<reference key="parent" ref="551021748"/>
+						<reference key="object" ref="174261225"/>
+						<reference key="parent" ref="241674020"/>
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">933</int>
-						<reference key="object" ref="84782196"/>
+						<reference key="object" ref="946161584"/>
 						<object class="NSMutableArray" key="children">
 							<bool key="EncodedWithXMLCoder">YES</bool>
-							<reference ref="174210863"/>
+							<reference ref="843932664"/>
 						</object>
 						<reference key="parent" ref="38314295"/>
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">934</int>
-						<reference key="object" ref="174210863"/>
-						<reference key="parent" ref="84782196"/>
+						<reference key="object" ref="843932664"/>
+						<reference key="parent" ref="946161584"/>
 					</object>
 				</object>
 			</object>
@@ -2855,15 +2854,9 @@ IDIwMDcAA</bytes>
 							<string>setActivePressed:</string>
 							<string>setSystemPressed:</string>
 							<string>setUserPressed:</string>
-							<string>showActivePressed:</string>
-							<string>showSystemPressed:</string>
-							<string>showUserPressed:</string>
 						</object>
 						<object class="NSMutableArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
-							<string>id</string>
-							<string>id</string>
-							<string>id</string>
 							<string>id</string>
 							<string>id</string>
 							<string>id</string>
@@ -2884,9 +2877,6 @@ IDIwMDcAA</bytes>
 							<string>setActivePressed:</string>
 							<string>setSystemPressed:</string>
 							<string>setUserPressed:</string>
-							<string>showActivePressed:</string>
-							<string>showSystemPressed:</string>
-							<string>showUserPressed:</string>
 						</object>
 						<object class="NSMutableArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
@@ -2916,18 +2906,6 @@ IDIwMDcAA</bytes>
 							</object>
 							<object class="IBActionInfo">
 								<string key="name">setUserPressed:</string>
-								<string key="candidateClassName">id</string>
-							</object>
-							<object class="IBActionInfo">
-								<string key="name">showActivePressed:</string>
-								<string key="candidateClassName">id</string>
-							</object>
-							<object class="IBActionInfo">
-								<string key="name">showSystemPressed:</string>
-								<string key="candidateClassName">id</string>
-							</object>
-							<object class="IBActionInfo">
-								<string key="name">showUserPressed:</string>
 								<string key="candidateClassName">id</string>
 							</object>
 						</object>
