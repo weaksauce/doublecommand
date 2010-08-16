@@ -178,25 +178,44 @@
 
 + (void) saveToPrefs:(NSArray*)keyboards{
 	NSUserDefaults* systemSettings = [NSUserDefaults standardUserDefaults];
-	int i, count = [keyboards count];
-	for (i = 0; i < count; i++) {
-		int counter = i + 1;
-		NSDictionary * obj = [keyboards objectAtIndex:i];
-		
-		[systemSettings setObject:[obj objectForKey:@"description"] forKey:[NSString stringWithFormat:@"dc.description%d", counter]];
-		[systemSettings setObject:[obj objectForKey:@"descriptionUserSet"] forKey:[NSString stringWithFormat:@"dc.descriptionUserSet%d", counter]];
-		[systemSettings setObject:[obj objectForKey:@"keyboardID"] forKey:[NSString stringWithFormat:@"dc.keyboardid%d", counter]];
-		[systemSettings setObject:[obj objectForKey:@"newConfigID"] forKey:[NSString stringWithFormat:@"dc.configid%d", counter]];
-		[systemSettings setObject:[obj objectForKey:@"active"] forKey:[NSString stringWithFormat:@"dc.active%d", counter]];
-		[systemSettings setObject:[obj objectForKey:@"deleted"] forKey:[NSString stringWithFormat:@"dc.deleted%d", counter]];
+	int counter, count = [keyboards count];
+	
+	for (counter = 0; counter < count; counter++) {
+		NSDictionary * obj = [keyboards objectAtIndex:counter];
+		if (counter == 0) {
+			//save global settings
+			[systemSettings setObject:[obj objectForKey:@"description"] forKey:@"dc.description"];
+			[systemSettings setObject:[obj objectForKey:@"descriptionUserSet"] forKey:@"dc.descriptionUserSet"];
+			[systemSettings setObject:[obj objectForKey:@"keyboardID"] forKey:@"dc.keyboardid"];
+			[systemSettings setObject:[obj objectForKey:@"newConfigID"] forKey:@"dc.configid"];
+			[systemSettings setObject:[obj objectForKey:@"active"] forKey:@"dc.active"];
+			[systemSettings setObject:[obj objectForKey:@"deleted"] forKey:@"dc.deleted"];
+		}else {
+			[systemSettings setObject:[obj objectForKey:@"description"] forKey:[NSString stringWithFormat:@"dc.description%d", counter]];
+			[systemSettings setObject:[obj objectForKey:@"descriptionUserSet"] forKey:[NSString stringWithFormat:@"dc.descriptionUserSet%d", counter]];
+			[systemSettings setObject:[obj objectForKey:@"keyboardID"] forKey:[NSString stringWithFormat:@"dc.keyboardid%d", counter]];
+			[systemSettings setObject:[obj objectForKey:@"newConfigID"] forKey:[NSString stringWithFormat:@"dc.configid%d", counter]];
+			[systemSettings setObject:[obj objectForKey:@"active"] forKey:[NSString stringWithFormat:@"dc.active%d", counter]];
+			[systemSettings setObject:[obj objectForKey:@"deleted"] forKey:[NSString stringWithFormat:@"dc.deleted%d", counter]];			
+		}
 	}
 }
 
 + (void) clearAllPrefs{
 	NSUserDefaults* systemSettings = [NSUserDefaults standardUserDefaults];
 	int i;
-	i = 1;
-	while ([systemSettings stringForKey:[NSString stringWithFormat:@"dc.description%d", i]] && i <= MAX_NUM_KEYBOARDS) {
+	i = 0;
+
+	if ([systemSettings stringForKey:@"dc.description"]) {
+		[systemSettings removeObjectForKey:@"dc.description"];
+		[systemSettings removeObjectForKey:@"dc.descriptionUserSet"];
+		[systemSettings removeObjectForKey:@"dc.keyboardid"];
+		[systemSettings removeObjectForKey:@"dc.configid"];
+		[systemSettings removeObjectForKey:@"dc.active"];
+		[systemSettings removeObjectForKey:@"dc.deleted"];
+	}
+	
+	while ( i == 0 || ([systemSettings stringForKey:[NSString stringWithFormat:@"dc.description%d", i]] && i <= MAX_NUM_KEYBOARDS)) {
 		[systemSettings removeObjectForKey:[NSString stringWithFormat:@"dc.description%d", i]];
 		[systemSettings removeObjectForKey:[NSString stringWithFormat:@"dc.descriptionUserSet%d", i]];
 		[systemSettings removeObjectForKey:[NSString stringWithFormat:@"dc.keyboardid%d", i]];
