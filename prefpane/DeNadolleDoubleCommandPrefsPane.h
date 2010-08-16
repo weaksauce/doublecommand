@@ -82,10 +82,6 @@ NSString * sysPrefsWriteTool = @"/Library/PreferencePanes/DoubleCommandPreferenc
 - (IBAction)setSystemPressed:(id)sender;
 - (IBAction)setActivePressed:(id)sender;
 
-- (IBAction)showUserPressed:(id)sender;
-- (IBAction)showSystemPressed:(id)sender;
-- (IBAction)showActivePressed:(id)sender;
-
 - (IBAction)saveSettingsPressed:(id)sender;
 - (IBAction)revertSettingsPressed:(id)sender;
 

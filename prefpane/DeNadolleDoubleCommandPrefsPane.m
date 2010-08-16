@@ -268,36 +268,6 @@
 	}
 	[self readActiveSettings];
 }
-	
-
-//  --------------------------------------------------------------------------------------
-//  get the UserValue into edit mode
-//
-- (IBAction)showUserPressed:(id)sender {
-	mEditVal = mUserVal;
-	[self refreshCheckBoxes];
-}
-
-
-//  --------------------------------------------------------------------------------------
-//  get the SystemValue into edit mode
-//
-- (IBAction)showSystemPressed:(id)sender {
-	mEditVal = mSystemVal;
-	[self refreshCheckBoxes];
-}
-
-//  --------------------------------------------------------------------------------------
-//  get the ActiveValue into edit mode
-//
-- (IBAction)showActivePressed:(id)sender {
-	mEditVal = mActiveVal;
-	[self refreshCheckBoxes];
-}
-
-
-
-
 
 #pragma mark -
 #pragma mark Main
@@ -582,11 +552,5 @@
 	}
 	[editVal setStringValue: [NSString stringWithFormat:@"%d", mEditVal]];
 }
-	
-- (NSString*) getSysctrlStringFromCurrentSettings{
-	
-	return @"dc.config=0 dc.config1=80 dc.keyboard1=40";
-}
-
 
 @end
