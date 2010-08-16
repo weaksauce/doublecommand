@@ -15,8 +15,20 @@
 //	Save the settings to disk and preferences.
 //
 - (IBAction)saveSettingsPressed:(id)sender {
+	//save to preferences
 	[KeyboardListUtility saveToPrefs:keyboardList];
+	//save to disk for system start
+	//save to disk globaly. 
+	
 }
+
+//  --------------------------------------------------------------------------------------
+//	clear all prefs
+//
+- (IBAction)clearPrefsPressed:(id)sender {
+	[KeyboardListUtility clearAllPrefs];
+}
+
 
 //  --------------------------------------------------------------------------------------
 //	Revert the current keyboard setting to the orignal settings before last save.
