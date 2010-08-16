@@ -220,6 +220,7 @@
 		}
 	}
 	[editVal setStringValue: [NSString stringWithFormat:@"%d", mEditVal]];
+	[self saveCheckboxSelectionToCurrentConfig];
 }
 
 
@@ -457,6 +458,21 @@
 }
 
 
+//  --------------------------------------------------------------------------------------
+//  helper method called everytime a checkbox is selected to save the current changes into
+//  the tableview's newConfigID column. 
+//
+- (void) saveCheckboxSelectionToCurrentConfig {
+	int currentRow = [mKeyboardTable selectedRow];
+	if(currentRow >= 0){
+		//If the row is valid save the current configuration into the newConfigid field of the data structure. 
+		NSMutableDictionary* theRecord = [keyboardList objectAtIndex:currentRow];
+		[theRecord setObject:[NSNumber numberWithInt:mEditVal] forKey:@"newConfigID"];
+		[self refreshCheckBoxes];
+	}
+}
+
+
 #pragma mark -
 #pragma mark TableView datasource methods
 - (id)tableView:(NSTableView *)aTableView objectValueForTableColumn:(NSTableColumn *)aTableColumn row:(int)rowIndex {
@@ -483,17 +499,6 @@
 
 #pragma mark -
 #pragma mark TableView delegate methods
-- (BOOL)tableView:(NSTableView *)aTableView shouldSelectRow:(int)rowIndex {
-	int currentRow = [mKeyboardTable selectedRow];
-	if(currentRow >= 0){
-		//If the row is valid save the current configuration into the newConfigid field of the data structure. 
-		NSMutableDictionary* theRecord = [keyboardList objectAtIndex:currentRow];
-		[theRecord setObject:[NSNumber numberWithInt:mEditVal] forKey:@"newConfigID"];
-		[self refreshCheckBoxes];
-	}
-	return YES;
-}
-
 - (void)tableViewSelectionDidChange:(NSNotification *)aNotification{
 	if(([mKeyboardTable selectedRow] >= 0)){
 		int index = [mKeyboardTable selectedRow];
