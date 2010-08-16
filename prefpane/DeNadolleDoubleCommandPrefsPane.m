@@ -15,7 +15,7 @@
 //	Save the settings to disk and preferences.
 //
 - (IBAction)saveSettingsPressed:(id)sender {
-	//nothing yet
+	[KeyboardListUtility saveToPrefs:keyboardList];
 }
 
 //  --------------------------------------------------------------------------------------
