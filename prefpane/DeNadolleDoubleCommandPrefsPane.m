@@ -462,25 +462,21 @@
 #pragma mark -
 #pragma mark TableView delegate methods
 -(void) tableViewSelectionIsChanging:(NSNotification *)notification{
-	//warn the user that they are going to lose info.
-	//save if ok.
-	//mIsChangedConfig = YES;
-//	if(mIsChangedConfig){
-//		[NSAlert alertWithMessageText:@"You have changed the configuration of this keyboard would you like to save?" defaultButton:@"Yes" alternateButton:@"No" otherButton:@"Cancel" informativeTextWithFormat:@""];
-//	}
-//	[[NSAlert alertWithMessageText:@"You have changed the configuration of this keyboard would you like to save?" defaultButton:@"Yes" alternateButton:@"No" otherButton:@"Cancel" informativeTextWithFormat:@""] runModal];
-//	NSRunAlertPanel(@"DoubleCommand Prefs",
-//					@"YouHaveChanged the config.",
-//					@"Oh dear", nil,  nil);
-	
+	int currentRow = [mKeyboardTable selectedRow];
+	if(currentRow >= 0){
+		//If the row is valid save the current configuration into the newConfigid field of the data structure. 
+		id theRecord = [keyboardList objectAtIndex:currentRow];
+		[theRecord setObject:[NSNumber numberWithInt:mEditVal] forKey:@"newConfigID"];
+		[self refreshCheckBoxes];
+	}
 }
 
 - (void)tableViewSelectionDidChange:(NSNotification *)aNotification{
 	if(!([mKeyboardTable selectedRow] < 0)){
 		int index = [mKeyboardTable selectedRow];
 		NSDictionary* obj = [keyboardList objectAtIndex:index];
-		NSLog(@"%@", [obj objectForKey:@"configid"]);
-		mEditVal = [[obj objectForKey:@"configid"] intValue];
+		NSLog(@"%@", [obj objectForKey:@"newConfigid"]);
+		mEditVal = [[obj objectForKey:@"newConfigid"] intValue];
 		[self refreshCheckBoxes];
 	}
 }
