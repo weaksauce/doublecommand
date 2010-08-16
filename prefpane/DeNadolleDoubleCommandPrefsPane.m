@@ -19,10 +19,22 @@
 }
 
 //  --------------------------------------------------------------------------------------
-//	Revert the current keyboard setting to the orignal.c
+//	Revert the current keyboard setting to the orignal settings before last save.
 //
 - (IBAction)revertSettingsPressed:(id)sender {
-	//nothing yet
+	int currentRow = [mKeyboardTable selectedRow];
+	if (currentRow >= 0){
+		//get the old config and save it in the dictionary
+		NSMutableDictionary* kbdObj = [keyboardList objectAtIndex:currentRow];
+		int originalConfig = [[kbdObj objectForKey:@"configID"] intValue];
+		[kbdObj setObject:[NSNumber numberWithInt:originalConfig] forKey:@"newConfigID"];
+
+		//apply the new settings
+		mEditVal = originalConfig;
+		[self refreshCheckBoxes];
+		//if we add the column for current config in the tableview this will be handy to refresh the data
+		//[mKeyboardTable reloadData];
+	}
 }
 
 //  --------------------------------------------------------------------------------------
