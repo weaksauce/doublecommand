@@ -78,9 +78,10 @@ NSString * sysPrefsWriteTool = @"/Library/PreferencePanes/DoubleCommandPreferenc
 - (OSStatus) tryAuthorization;
 - (void) destroyAuthorization;
 - (BOOL) writeUserSettings;
-- (OSStatus) writeActiveSettings;
 - (void) refreshCheckBoxes;
 - (void) saveCheckboxSelectionToCurrentConfig;
+- (BOOL) activateCurrentSettings;
+- (OSStatus) writeValue:(unsigned int)configID forSysCtl:(NSString*)sysctlName;
 
 //table view delegate methods.
 - (id)tableView:(NSTableView *)aTableView objectValueForTableColumn:(NSTableColumn *)aTableColumn row:(int)rowIndex;

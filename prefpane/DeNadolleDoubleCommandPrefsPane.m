@@ -19,8 +19,8 @@
 	[KeyboardListUtility saveToPrefs:keyboardList];
 	//save to disk for system start
 	[self writeUserSettings];
-	//save to disk globaly. 
-	
+	//activate settings for the current session
+	[self activateCurrentSettings];
 }
 
 //  --------------------------------------------------------------------------------------
@@ -45,8 +45,7 @@
 		//apply the new settings
 		mEditVal = originalConfig;
 		[self refreshCheckBoxes];
-		//if we add the column for current config in the tableview this will be handy to refresh the data
-		//[mKeyboardTable reloadData];
+		[mKeyboardTable reloadData];
 	}
 }
 
@@ -63,6 +62,8 @@
 		}
 	}
 	[editVal setStringValue: [NSString stringWithFormat:@"%d", mEditVal]];
+	//update the config so it will save correctly.
+	[self saveCheckboxSelectionToCurrentConfig];
 }
 
 
@@ -299,23 +300,43 @@
     return ret;
 }
 
+-(BOOL) activateCurrentSettings{
+	int i=0, count = [keyboardList count];
+	BOOL ret = NO;
+	for(i = 0; i <= MAX_NUM_KEYBOARDS && i < count; i++){
+		NSDictionary* curKbd = [keyboardList objectAtIndex:i];
+		unsigned int keyID  = [[curKbd objectForKey:@"keyboardID"] unsignedIntValue];
+		unsigned int confID = [[curKbd objectForKey:@"newConfigID"] unsignedIntValue];
 
-//  --------------------------------------------------------------------------------------
-//  write Active Settings to sysctl
-//
-- (OSStatus) writeActiveSettings {
-	return 0;
+		if(i==0){			
+			ret = [self writeValue:confID forSysCtl:@"dc.config"];
+			if (ret == -1) { break; }
+		}else{
+			ret = [self writeValue:keyID forSysCtl:[NSString stringWithFormat:@"dc.keyboard%d",i]];
+			if (ret == -1) { break; }
+			ret = [self writeValue:confID forSysCtl:[NSString stringWithFormat:@"dc.config%d",i]];
+			if (ret == -1) { break; }
+		}
+	}
+	return ret;
 }
 
 //  --------------------------------------------------------------------------------------
 //  write a setting to sysctl
 //
-- (OSStatus) writeValue:(int)configID forSysCtl:(NSString*)sysctlName {
+- (OSStatus) writeValue:(unsigned int)configID forSysCtl:(NSString*)sysctlName {
+//	if( errCode==-1 ) NSLog(@"Error writing sysctl:%@ with value %d. Error Code: %d configIDlength: %d", sysctlName, configID, errCode, sizeof(configID));
+	NSLog(@"writing %d for value: %@", configID, sysctlName);
     OSStatus errCode = 0;    
     u_int len = sizeof(configID);
 	const char * name = [sysctlName UTF8String];
 	
-    errCode = sysctlbyname(name, NULL, 0, &configID, len);
+	errCode = sysctlbyname(name, NULL, 0, &configID, len);
+	
+	if( errCode == -1 ) {
+		perror("sysctl");
+		NSLog(@"Error writing sysctl:%@ with value %d. Error Code: %d", sysctlName, configID, errCode);
+	}
     return (errCode);
 }
 
