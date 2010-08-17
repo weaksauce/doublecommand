@@ -45,23 +45,8 @@ NSString * sysPrefsWriteTool = @"/Library/PreferencePanes/DoubleCommandPreferenc
     IBOutlet id checkBoxes; // NSMatrix containig all the NSButton-Checkboxes
     IBOutlet id editVal;
 	
-    IBOutlet id showUserButton;
-    IBOutlet id showSystemButton;
-    IBOutlet id showActiveButton;
-	
-    IBOutlet id setUserButton;
-    IBOutlet id setSystemButton;
-    IBOutlet id setActiveButton;
-
-    IBOutlet id userVal;
-    IBOutlet id systemVal;
-    IBOutlet id activeVal;
-	
 	AuthorizationRef mAuthRef;
 	
-	unsigned int mUserVal;
-	unsigned int mSystemVal;
-	unsigned int mActiveVal;
 	unsigned int mEditVal;
 	
 	IBOutlet id keyboardConfigCurrent;
@@ -80,10 +65,6 @@ NSString * sysPrefsWriteTool = @"/Library/PreferencePanes/DoubleCommandPreferenc
 
 - (IBAction)checkBoxClicked:(id)sender;
 
-- (IBAction)setUserPressed:(id)sender;
-- (IBAction)setSystemPressed:(id)sender;
-- (IBAction)setActivePressed:(id)sender;
-
 - (IBAction)saveSettingsPressed:(id)sender;
 - (IBAction)revertSettingsPressed:(id)sender;
 - (IBAction)clearPrefsPressed:(id)sender;
@@ -96,11 +77,7 @@ NSString * sysPrefsWriteTool = @"/Library/PreferencePanes/DoubleCommandPreferenc
 - (BOOL) isBitSet:(int)bit;
 - (OSStatus) tryAuthorization;
 - (void) destroyAuthorization;
-- (BOOL) readSystemSettings;
-- (OSStatus) writeSystemSettings;
-- (BOOL) readUserSettings;
 - (BOOL) writeUserSettings;
-- (BOOL) readActiveSettings;
 - (OSStatus) writeActiveSettings;
 - (void) refreshCheckBoxes;
 - (void) saveCheckboxSelectionToCurrentConfig;
