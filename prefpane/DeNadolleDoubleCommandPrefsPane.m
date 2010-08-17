@@ -21,6 +21,8 @@
 	[self writeUserSettings];
 	//activate settings for the current session
 	[self activateCurrentSettings];
+	//make the new settings the settings to revert to.
+	[self copyNewSettingsToOld];
 }
 
 //  --------------------------------------------------------------------------------------
@@ -46,6 +48,18 @@
 		mEditVal = originalConfig;
 		[self refreshCheckBoxes];
 		[mKeyboardTable reloadData];
+	}
+}
+//  --------------------------------------------------------------------------------------
+//	copy each value from the key newConfigID to configID to make a new revert point.
+//
+- (void)copyNewSettingsToOld {
+	int i, count = [keyboardList count];
+	
+	for(i = 0; i < count; i++){
+		NSMutableDictionary* keyboard = [keyboardList objectAtIndex:i];
+		unsigned int newConfig = [[keyboard objectForKey:@"newConfigID"] unsignedIntValue];
+		[keyboard setObject:[NSNumber numberWithUnsignedInt:newConfig] forKey:@"configID"];
 	}
 }
 

@@ -82,6 +82,7 @@ NSString * sysPrefsWriteTool = @"/Library/PreferencePanes/DoubleCommandPreferenc
 - (void) saveCheckboxSelectionToCurrentConfig;
 - (BOOL) activateCurrentSettings;
 - (OSStatus) writeValue:(unsigned int)configID forSysCtl:(NSString*)sysctlName;
+- (void) copyNewSettingsToOld;
 
 //table view delegate methods.
 - (id)tableView:(NSTableView *)aTableView objectValueForTableColumn:(NSTableColumn *)aTableColumn row:(int)rowIndex;
