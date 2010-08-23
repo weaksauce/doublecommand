@@ -73,6 +73,12 @@
 			CFNumberGetValue(deviceProperty, CFNumberGetType(deviceProperty), &hidsubsystemID);
 			strProduct =  (NSString*) deviceProduct;
 		}else {
+			if (deviceProduct) {
+				CFRelease(deviceProduct);
+			}
+			if (deviceProperty) {
+				CFRelease(deviceProperty);
+			}
 			printf("error with current Keyboard\n");
 			continue;
 		}
@@ -88,6 +94,7 @@
 		
 		//add the current keyboard object to the array to return it. 
 		[keyboardsFound addObject:currentKeyboard];
+		[currentKeyboard release];
 		
 		CFRelease(deviceProduct);
 		CFRelease(deviceProperty);
@@ -97,7 +104,7 @@
 	IOObjectRelease(iterator);
 	IOObjectRelease(myKeyboardObject);
 	
-	return keyboardsFound;
+	return [keyboardsFound autorelease];
 }
 
 #pragma mark helper methods
@@ -137,6 +144,7 @@
 		[currentKeyboard setObject:[NSNumber numberWithBool:NO] forKey:@"deleted"];
 		
 		[keyboardsFound addObject:currentKeyboard];
+		[currentKeyboard release];
 	}else {
 		//fill up the global keyboard config with the saved preferences. 
 		NSMutableDictionary* currentKeyboard = [[NSMutableDictionary alloc] init];
@@ -149,6 +157,7 @@
 		[currentKeyboard setObject:[NSNumber numberWithBool:[systemSettings boolForKey:@"dc.deleted"]] forKey:@"deleted"];
 		
 		[keyboardsFound addObject:currentKeyboard];
+		[currentKeyboard release];
 	}
 	
 	//Get the Saved keyboards from the preferences. 
@@ -168,6 +177,7 @@
 		[currentKeyboard setObject:[NSNumber numberWithBool:[systemSettings boolForKey:[NSString stringWithFormat:@"dc.deleted%d", i]]] forKey:@"deleted"];
 		
 		[keyboardsFound addObject:currentKeyboard];
+		[currentKeyboard release];
 	}
 	
 	
